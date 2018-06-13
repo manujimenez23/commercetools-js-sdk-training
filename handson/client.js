@@ -5,24 +5,32 @@ const sdkRequestBuilder = require('@commercetools/api-request-builder');
 const { getCredentials } = require('@commercetools/get-credentials');
 
 const authHost = 'https://auth.commercetools.co';
-const projectKey = 'sdk-training-project';
-const scopes = ['manage_project:sdk-training-project'];
+const projectKey = 'js-sdk-training';
+const scopes = ['manage_project:js-sdk-training'];
 const host = 'https://api.commercetools.co';
 
 const getClient = function getClient() {
   // TODO: 1.3
   // Use getCredentials
   // then createClient
-  return getCredentials('adminkey').then((credentials) => {
+  // getCredentials pulls information from .ct-credentials.env
+  // Credentials are stored by key CT_<KEY>
+  
+  return getCredentials('js-sdk-training').then((credentials) => {
     const authConfig = {
       host: authHost,
       projectKey,
       credentials,
       scopes,
     };
-  // getCredentials pulls information from .ct-credentials.env
-  // Credentials are stored by key CT_<KEY>
 
+  return createClient({
+    middlewares: [
+      middlewareAuth.createAuthMiddlewareForClientCredentialsFlow(authConfig),
+      httpMiddleware.createHttpMiddleware({ host }),
+    ]
+  });
+});
 };
 
 module.exports.getClient = getClient;
