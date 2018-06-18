@@ -5,6 +5,7 @@ const { getClient, projectKey } = require('./client.js');
 const getProductTypes = function getProductTypes() {
   // TODO: 2.4
   // Get a list of product types
+  const ProductTypeUri = requestBuilder.productTypes.build();
 
 };
 
