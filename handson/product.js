@@ -8,18 +8,50 @@ const getProductTypes = function getProductTypes() {
 
     const requestBuilder = sdkRequestBuilder.createRequestBuilder({ projectKey });
     const productTypeUri = requestBuilder.productTypes.build();
-    const productRequest = {
+    const productTypeRequest = {
       uri: productTypeUri,
       method: 'GET'
     };
-    return client.execute(productRequest);
+    return client.execute(productTypeRequest);
   });
 };
 
 const createProduct = function createProduct(name, key, description, productTypeId, sku, priceCentAmount, taxCategoryId) {
-  // TODO: 4
   //Create a product
 
+  return getClient().then((client) => {
+    const requestBuilder = sdkRequestBuilder.createRequestBuilder({ projectKey });
+    const productUri = requestbuilder.products.build();
+    const productRequest = {
+      uri:productUri,
+      method: 'POST',
+      body: {
+        name: { en: name },
+        key: key,
+        description: { en: description },
+        productType: {
+          id: productTypeId,
+          typeId: 'product-type'
+        },
+        slug: { en: key },
+        taxCategory: {
+          typeId: 'tax-category',
+          id: taxCategoryId
+        },
+        masterVariant: {
+          sku: sku,
+          prices: [{
+            value: {
+              type: 'centPrecision',
+              currencyCode: 'USD',
+              centAmount: priceCentAmount
+            }
+          }]
+        }
+      }
+    };
+    return client.execute(productRequest);
+  });
 };
 
 module.exports.getProductTypes = getProductTypes;

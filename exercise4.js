@@ -12,19 +12,18 @@ var taxPromise = getTaxCategories();
 Promise.all([ptPromise, taxPromise]).then(function(values) {
   const productType = values[0].body.results[0];
   const taxCategory = values[1].body.results[0];
-
-  // Random string in training module only.
-  // Key and SKU must be unique, so this 
-  // prevents duplicate error with multiple participants.
   const random = Math.random().toString(36).substring(5);
 
+  // console.log(productType);
+  // console.log(taxCategory);
+
   createProduct(
-    'ColeHaan Zero Grand 2',
-    'zerogrand2-' + random,
-    'Comfy dress shoes that feel like sneakers.',
+    'Air Force One',
+    'airforce' + random,
+    'Fresh All White Nikes',
     productType.id,
-    'SKU-zerogrand-master-' + random,
-    15000, //$150.00 assumed USD
+    'airforce' + random,
+    10000, //$150.00 assumed USD
     taxCategory.id
   ).then(product => {
     // Save SKU for use later.
