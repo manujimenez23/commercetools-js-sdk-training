@@ -1,35 +1,30 @@
 const { getProductTypes, createProduct } = require('./handson/product.js');
 const { getTaxCategories } = require('./handson/taxCategory.js');
 
+const p1 = getProductTypes();
+const p2 = getTaxCategories();
 
-//Complete the function createProduct in ./handson/product.js
+Promise.all([p1, p2]).then((responses) => {
+  const productType = responses[0].body.results[0];
+  const taxCategory = responses[1].body.results[0];
 
-//Use your functions getProductTypes and getTaxCategories
-// and use the first entry to create a new product
-var ptPromise = getProductTypes();
-var taxPromise = getTaxCategories();
+  createProduct({
+    name:'Air Force One',
+    key:'airforce',
+    description:'Fresh Nikes',
+    productTypeId:productType.id,
+    slug:'airforce-1',
+    taxCategoryId:taxCategory.id,
+    sku:'12345', //string
+    priceCentAmount:10000, //number
+    publish: true //Boolean
 
-Promise.all([ptPromise, taxPromise]).then(function(values) {
-  const productType = values[0].body.results[0];
-  const taxCategory = values[1].body.results[0];
-  const random = Math.random().toString(36).substring(5);
-
-  // console.log(productType);
-  // console.log(taxCategory);
-
-  createProduct(
-    'Air Force One',
-    'airforce' + random,
-    'Fresh All White Nikes',
-    productType.id,
-    'airforce' + random,
-    10000, //$150.00 assumed USD
-    taxCategory.id
-  ).then(product => {
-    // Save SKU for use later.
+  }).then(product => {
+    console.log('Got Here')
     console.log(JSON.stringify(product, null, 4));
   }).catch(err => {
-    console.log(JSON.stringify(err, null, 4));
+  console.log('There was an error')
+  console.log(JSON.stringify(err, null, 4));
   });
 
 }).catch(error => {

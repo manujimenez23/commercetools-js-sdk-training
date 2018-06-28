@@ -1,5 +1,4 @@
 const sdkRequestBuilder = require('@commercetools/api-request-builder');
-
 const { getClient, projectKey } = require('./client.js');
 
 const getProductTypes = function getProductTypes() {
@@ -16,14 +15,14 @@ const getProductTypes = function getProductTypes() {
   });
 };
 
-const createProduct = function createProduct(name, key, description, productTypeId, sku, priceCentAmount, taxCategoryId) {
-  //Create a product
+const createProduct = ({name, key, description, productTypeId, slug,taxCategoryId, sku, priceCentAmount, publish }) => {
+  //Create a published product
 
   return getClient().then((client) => {
     const requestBuilder = sdkRequestBuilder.createRequestBuilder({ projectKey });
-    const productUri = requestbuilder.products.build();
+    const productUri = requestBuilder.products.build();
     const productRequest = {
-      uri:productUri,
+      uri: productUri,
       method: 'POST',
       body: {
         name: { en: name },
@@ -33,10 +32,10 @@ const createProduct = function createProduct(name, key, description, productType
           id: productTypeId,
           typeId: 'product-type'
         },
-        slug: { en: key },
+        slug: { en: slug },
         taxCategory: {
-          typeId: 'tax-category',
-          id: taxCategoryId
+          "typeId": "tax-category",
+          "id": taxCategoryId
         },
         masterVariant: {
           sku: sku,
@@ -47,9 +46,11 @@ const createProduct = function createProduct(name, key, description, productType
               centAmount: priceCentAmount
             }
           }]
-        }
+        },
+        publish: publish
       }
     };
+    console.log(productRequest);
     return client.execute(productRequest);
   });
 };
