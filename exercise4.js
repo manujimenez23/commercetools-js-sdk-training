@@ -20,7 +20,6 @@ Promise.all([p1, p2]).then((responses) => {
     publish: true //Boolean
 
   }).then(product => {
-    console.log('Got Here')
     console.log(JSON.stringify(product, null, 4));
   }).catch(err => {
   console.log('There was an error')

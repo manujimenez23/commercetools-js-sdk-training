@@ -4,16 +4,24 @@ const sdkRequestBuilder = require('@commercetools/api-request-builder');
 
 const { getClient, projectKey } = require('./client.js');
 
-const createCustomer = function createCustomer(
-  email,
-  password,
-  firstName,
-  lastName,
-  country
-) {
-  // TODO: 5
-  // Create a customer
-
+const createCustomer = (email, password,firstName,lastName,country) => {
+  return getClient().then((client) => {
+  const requestBuilder = sdkRequestBuilder.createRequestBuilder({ projectKey });
+  const customerUri = requestBuilder.customers.build();
+  const customerRequest = {
+    uri: customerUri,
+    method: 'POST',
+    body: {
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      country: country
+    }
+  };
+    console.log(customerRequest);
+    return client.execute(customerRequest);
+  });
 };
 
 module.exports.createCustomer = createCustomer;

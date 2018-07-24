@@ -1,18 +1,15 @@
 const { createCustomer } = require('./handson/customer.js');
 
 //Complete the createCustomer function in ./handson/customer.js
-
-// TODO: 5.1
-// Update data to be unique
-
 createCustomer(
-  'email@domain.com',
-  'password-asdf',
-  'John',
-  'Smith',
+  'jones@gmail.com',
+  'password-jones',
+  'Jim',
+  'Jones',
   'US'
 ).then(customer => {
   console.log(customer);
 }).catch(error => {
-  console.log(JSON.stringify(error, null, 4));
+  console.log('There was an error');
+  console.log(error);
 });
